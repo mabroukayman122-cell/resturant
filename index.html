@@ -652,7 +652,10 @@
                     { name: "بيتزا فاهيتا", prices: [125, 125] },
                     { name: "بيتزا روستو", prices: [120, 170] },
                     { name: "بيتزا سي فود", prices: [150, 170] },
-                    { name: "بيتزا لحم مفروم", prices: [125, 140] }
+                    { name: "بيتزا لحم مفروم", prices: [125, 140] },
+                    { name: "بيتزا تشيكن رانش", prices: [115, 130] }
+            
+
                 ]
             },
             {
@@ -665,8 +668,8 @@
                     { name: "فطيره سجق", prices: [125, 145] },
                     { name: "فطيره بسطرمه", prices: [125, 145] },
                     { name: "فطيره مشكل جين", prices: [125, 145] },
-                    { name: "فطيره مشكل لحوم", prices: [155, 135] },
-                    { name: "فطيره شاورما فراخ", prices: [145, 125] },
+                    { name: "فطيره مشكل لحوم", prices: [135, 155] },
+                    { name: "فطيره شاورما فراخ", prices: [125, 145] },
                     { name: "فطيره سي فود", prices: [140, 160] },
                     { name: "فطيره تونه", prices: [125, 145] }
                 ]
@@ -871,10 +874,12 @@
         ];
 
         // عزل سلة المشتريات والبيانات لكل جهاز (معرّف فريد خاص بالمتصفح)
-        let deviceCartKey = 'rosto_cart_' + (localStorage.getItem('rosto_device_id') || Math.random().toString(36.25));
-        if (!localStorage.getItem('rosto_device_id')) {
-            localStorage.setItem('rosto_device_id', deviceCartKey);
+        let deviceId = localStorage.getItem('rosto_device_id');
+        if (!deviceId) {
+            deviceId = Math.random().toString(36).slice(2);
+            localStorage.setItem('rosto_device_id', deviceId);
         }
+        const deviceCartKey = 'rosto_cart_' + deviceId;
 
         let cart = JSON.parse(localStorage.getItem(deviceCartKey)) || [];
 
@@ -910,7 +915,7 @@
 
                 let itemsHTML = '';
                 cat.items.forEach((item, itemIdx) => {
-                    if (cat.hasSizes) {
+                    if (cat.hasSizes && item.prices) {
                         const defaultSizeIdx = 0;
                         itemsHTML += `
                             <div class="menu-item">
